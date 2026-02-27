@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Hurik/Hurik.csproj" Id="91269a05-92f2-4ae5-94e0-8fc8221179b6" />
+  <Project Path="Syntax/Syntax.csproj" Id="eb2cadb1-32fb-47e5-b420-655be6a3b0cb" />
+  <Project Path="Tanks/Tanks.csproj" Id="735c8215-a26a-445f-a452-a3cd4b22ae42" />
+</Solution>
