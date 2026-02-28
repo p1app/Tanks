@@ -17,5 +17,7 @@ namespace Tanks
         public virtual void Intersection(List<Element> elements) { }
         public virtual bool IntersectionBullet(List<Element> elements) { return false; }
         public virtual void Intersection(List<Element> elements, List<Element> removeElement) { }
+        public virtual bool IntersectionTank(List<Element> elements) { return false; }
+
     }
 }

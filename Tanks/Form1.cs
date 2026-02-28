@@ -13,11 +13,10 @@ namespace Tanks
 
     public partial class Form1 : Form
     {
-        Tank tankBlue;
-        Tank tankRed;
+        private Tank tankBlue;
+        private Tank tankRed;
 
         public List<Element> elements;
-
         public List<Element> removeList = new();
 
         public const int CELL_SIZE = 10;
@@ -26,17 +25,15 @@ namespace Tanks
         public bool isStart1 = false;
         public bool isStart2 = false;
 
+
         private static EnDirection tankBlueDir;
         private static EnDirection tankBluelastDir;
-
 
         private static EnDirection tankRedDir;
         private static EnDirection tankRedlastDir;
 
 
         System.Windows.Forms.Timer timer1 = new ();
-
-
 
 
         public Form1()
@@ -59,22 +56,18 @@ namespace Tanks
             elements.Add(new Barrier(-10, -10, 10, 600));
             elements.Add(new Barrier(-10, -10, 800, 10));
             elements.Add(new Barrier(800, -10, 10, 800));
-            elements.Add(new Barrier(-10, 600, 600, 10));
-
-
+            elements.Add(new Barrier(0, 550, 810, 10));
             
 
             this.DoubleBuffered = true;
 
-            timer1.Interval = 100;
+            timer1.Interval = 3;
             timer1.Tick += timer1Tick;
             timer1.Start();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawLine(new Pen(Color.Black), new Point(800, 300), new Point(500, 300));
-
             foreach (Element item in elements)
             {
                 item.Draw(e.Graphics);
@@ -117,6 +110,9 @@ namespace Tanks
                         isStart1 = true;
                     }
                     break;
+                case Keys.E:
+                    isStart1 = false;
+                    break;
                 case Keys.Space:
                     tankBluelastDir = tankBlueDir;
                     elements.Add(tankBlue.Shot(tankBluelastDir));
@@ -156,6 +152,9 @@ namespace Tanks
                         isStart2 = true;
                     }
                     break;
+                case Keys.OemPeriod:
+                    isStart2 = false;
+                    break; 
                 case Keys.OemQuestion:
                     tankRedlastDir = tankRedDir;
                     elements.Add(tankRed.Shot(tankRedlastDir));
@@ -176,18 +175,13 @@ namespace Tanks
             foreach (Element element in elements.OfType<Tank>())
             {
                 element.Intersection(elements);
+                element.IntersectionBullet(elements);
 
                 if (isStart1)
                     tankBlue.Move();
 
                 if (isStart2)
                     tankRed.Move();
-
-                if (tankBlue.IntersectionBullet(elements))
-                    lblBlueHP.Text = $"{tankBlue.HP} hp";
-
-                if (tankRed.IntersectionBullet(elements))
-                    lblRebHP.Text = $"{tankRed.HP} hp";
 
                 if (tankRed.Die())
                 {
@@ -201,6 +195,13 @@ namespace Tanks
                     lblDie.Text = "Красный танк победил";
                     lblDie.Visible = true;
                 }
+
+                if (tankBlue.Body.IntersectsWith(tankRed.Body))
+                {
+                    timer1.Stop();
+                    lblDie.Text = "Ничья";
+                    lblDie.Visible = true;
+                }
             }
 
 
@@ -210,6 +211,10 @@ namespace Tanks
                 element.Move();
                 element.Intersection(elements, removeList);
             }
+
+            lblBlueHP.Text = $"{tankBlue.HP} hp";
+
+            lblRebHP.Text = $"{tankRed.HP} hp";
 
             this.Invalidate();
         }

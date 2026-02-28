@@ -16,7 +16,7 @@ namespace Tanks
         private SolidBrush bulletbrush = new SolidBrush(Color.Black);
         EnDirection direction = EnDirection.Down;
 
-        int MoveSpeed = 10;
+        int MoveSpeed = 7;
 
         public Bullet(int x, int y, EnDirection direction)
         {
@@ -36,7 +36,24 @@ namespace Tanks
         {
             foreach (Barrier barrier in elements.OfType<Barrier>())
                 if (Body.IntersectsWith(barrier.Body))
-                    removeElement.Add(this);
+                    switch (direction)
+                    {
+                        case EnDirection.Down:
+                            direction = EnDirection.Up;
+                            break;
+                        case EnDirection.Up:
+                            direction = EnDirection.Down;
+                            break;
+                        case EnDirection.Left:
+                            direction = EnDirection.Right;
+                            break;
+                        case EnDirection.Right:
+                            direction = EnDirection.Left;
+                            break;
+                        default:
+                            break;
+                    }
+            ;
 
             foreach (Tank tank in elements.OfType<Tank>())
                 if (Body.IntersectsWith(tank.Body))

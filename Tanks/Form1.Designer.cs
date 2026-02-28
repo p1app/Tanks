@@ -42,7 +42,6 @@
             lblDie.Name = "lblDie";
             lblDie.Size = new Size(294, 87);
             lblDie.TabIndex = 0;
-            lblDie.Text = "";
             lblDie.Visible = false;
             // 
             // lblRebHP
