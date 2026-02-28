@@ -8,7 +8,7 @@ namespace Tanks
 {
     public class Bullet : Element
     {
-        public override Rectangle Body { get; set; }
+        public Rectangle Body { get; set; }
         public int x;
         public int y;
         private const int WIDTH = 5;
@@ -53,11 +53,8 @@ namespace Tanks
                         default:
                             break;
                     }
-            ;
 
-            foreach (Tank tank in elements.OfType<Tank>())
-                if (Body.IntersectsWith(tank.Body))
-                    removeElement.Add(this);
+            IsRemove = true;
         }
 
 

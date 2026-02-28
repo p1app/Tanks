@@ -6,7 +6,7 @@ namespace Tanks
 {
     public class Barrier : Element
     {
-        public override Rectangle Body { get; set; }
+        public Rectangle Body { get; set; }
         private SolidBrush _brush = new SolidBrush(Color.Black);
 
         public Barrier(int x, int y, int width, int height)

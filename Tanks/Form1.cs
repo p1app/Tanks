@@ -154,13 +154,16 @@ namespace Tanks
                     break;
                 case Keys.OemPeriod:
                     isStart2 = false;
-                    break; 
+                    break;
                 case Keys.OemQuestion:
                     tankRedlastDir = tankRedDir;
                     elements.Add(tankRed.Shot(tankRedlastDir));
                     break;
             }
         }
+
+
+
 
         public void RemoveToList()
         {
@@ -209,7 +212,8 @@ namespace Tanks
             foreach (Element element in elements.OfType<Bullet>())
             {
                 element.Move();
-                element.Intersection(elements, removeList);
+                elements.RemoveAll(x => x.IsRemove);
+                //element.Intersection(elements, removeList);
             }
 
             lblBlueHP.Text = $"{tankBlue.HP} hp";

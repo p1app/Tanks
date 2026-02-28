@@ -7,7 +7,8 @@ namespace Tanks
     public class Tank : Element
     {
         //public 
-        public override Rectangle Body { get; set; }
+        public Rectangle Body { get; set; }
+        public bool IsStart { get; set; }
         public int HP { get; private set; }
 
         //private
