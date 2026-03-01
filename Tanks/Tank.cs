@@ -6,6 +6,9 @@ namespace Tanks
 {
     public class Tank : Element
     {
+        //sprite
+        private Bitmap spriteBody = new("C:\\Users\\fatim\\OneDrive\\Рабочий стол\\с флешки\\Рамазан\\image\\Снимок экрана 2025-10-23 215823.png");
+        private Bitmap spriteBarrel = new("C:\\Users\\fatim\\OneDrive\\Рабочий стол\\с флешки\\Рамазан\\image\\Снимок экрана 2024-09-11 215427.png");
         //public 
         public override bool IsStart { get; set; }
         public int HP { get; private set; }
@@ -44,8 +47,8 @@ namespace Tanks
 
         public override void Draw(Graphics g)
         {
-            g.FillRectangle(_brush, Body);
-            g.FillRectangle(_brush, barrel.BarrelBody);
+            g.DrawImage(spriteBody, Body);
+            g.DrawImage(spriteBarrel, barrel.BarrelBody);
         }
         
         public void SetDirection(EnDirection enDirection)
