@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace Tanks
 {
     public class Tank : Element
     {
         //sprite
-        private Bitmap spriteBody = new("C:\\Users\\fatim\\OneDrive\\Рабочий стол\\с флешки\\Рамазан\\image\\Снимок экрана 2025-10-23 215823.png");
-        private Bitmap spriteBarrel = new("C:\\Users\\fatim\\OneDrive\\Рабочий стол\\с флешки\\Рамазан\\image\\Снимок экрана 2024-09-11 215427.png");
+        private Bitmap spriteBody = new(@"image\makhachev.png");
+        private Bitmap spriteBarrel = new(@"image\ark.png");
         //public 
         public override bool IsStart { get; set; }
         public int HP { get; private set; }
@@ -130,7 +131,7 @@ namespace Tanks
             }
             barrel.BarrelBody = new Rectangle(barlX, barlY, barlWidth, barlHeight);
         }
-        
+
         public Bullet Shot()
         {
             int bulX = 0;
@@ -161,6 +162,8 @@ namespace Tanks
 
         public override bool Intersection(List<Element> elements)
         {
+            int x = Body.X;
+            int y = Body.Y;
             foreach (Element element in elements)
             {
                 if (element.Body == Body)
@@ -169,7 +172,9 @@ namespace Tanks
                 if (Body.IntersectsWith(element.Body) || barrel.BarrelBody.IntersectsWith(element.Body))
                 {
                     if (element is Barrier)
-                        HP -= 100;
+                    {
+                        IsStart = false; 
+                    }
                     if (element is Bullet)
                         HP -= 10;
                     if(element is Tank)

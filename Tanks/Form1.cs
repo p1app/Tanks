@@ -5,8 +5,6 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using static Tanks.Tank;
 
 
-//подбитие в пушку
-
 namespace Tanks
 {
 
@@ -18,9 +16,6 @@ namespace Tanks
 
         public List<Element> elements;
         public List<Element> removeList = new();
-
-        public const int CELL_SIZE = 10;
-
 
         private System.Windows.Forms.Timer timer1 = new ();
 
@@ -36,10 +31,16 @@ namespace Tanks
                 tankBlue,
                 tankRed,
 
-                new Barrier(-10, -10, 10, 800),
+                new Barrier(-10, -10, 10, 900),
                 new Barrier(-10, -10, 1200, 10),
-                new Barrier(1200, -10, 10, 800),
-                new Barrier(0, 750, 1210, 10)
+                new Barrier(1182, -10, 10, 900),
+                new Barrier(-10, 850, 1210, 10),
+
+                new Barrier(290,0,10,300),
+                new Barrier(890,0,10,300),
+                new Barrier(590,300,10,300),
+                new Barrier(290,600,10,300),
+                new Barrier(890,600,10,300)
             ]; 
 
             this.DoubleBuffered = true;
