@@ -35,13 +35,14 @@
             // 
             // lblDie
             // 
-            lblDie.BackColor = Color.LimeGreen;
+            lblDie.BackColor = Color.DarkGray;
             lblDie.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 204);
             lblDie.ForeColor = SystemColors.ButtonHighlight;
-            lblDie.Location = new Point(260, 176);
+            lblDie.Location = new Point(450, 300);
             lblDie.Name = "lblDie";
-            lblDie.Size = new Size(294, 87);
+            lblDie.Size = new Size(300, 100);
             lblDie.TabIndex = 0;
+            lblDie.TextAlign = ContentAlignment.MiddleCenter;
             lblDie.Visible = false;
             // 
             // lblRebHP
@@ -49,7 +50,7 @@
             lblRebHP.AutoSize = true;
             lblRebHP.BackColor = Color.Red;
             lblRebHP.ForeColor = SystemColors.ButtonHighlight;
-            lblRebHP.Location = new Point(720, 524);
+            lblRebHP.Location = new Point(1116, 9);
             lblRebHP.Name = "lblRebHP";
             lblRebHP.Size = new Size(54, 20);
             lblRebHP.TabIndex = 1;
@@ -70,7 +71,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(782, 553);
+            ClientSize = new Size(1182, 753);
             Controls.Add(lblBlueHP);
             Controls.Add(lblRebHP);
             Controls.Add(lblDie);

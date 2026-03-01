@@ -6,7 +6,6 @@ namespace Tanks
 {
     public class Barrier : Element
     {
-        public Rectangle Body { get; set; }
         private SolidBrush _brush = new SolidBrush(Color.Black);
 
         public Barrier(int x, int y, int width, int height)

@@ -7,37 +7,35 @@ namespace Tanks
     public class Tank : Element
     {
         //public 
-        public Rectangle Body { get; set; }
-        public bool IsStart { get; set; }
+        public override bool IsStart { get; set; }
         public int HP { get; private set; }
+        public override string Colorr { get; set; }
 
         //private
         private int _width = WIDTH;
         private int _height = HEIGHT;
 
-        private const int HEIGHT = 50;
+        private const int HEIGHT = 60;
         private const int WIDTH = 40;
 
         private SolidBrush _brush;
 
         private EnDirection _direction;
 
-        private int _moveSpeed = 1;
+        private int _moveSpeed = 2;
 
         
         //Barrel
         public Barrel barrel;
-        private int barlWidth = 5;
+        private int barlWidth = 6;
         private int barlHeight = 20;
-
-        //Bullet
-        public List<Bullet> bullets = [];
 
         public Tank(int x, int y, SolidBrush brush, Barrel barrel)
         {
             Body = new Rectangle(x, y, _width, _height);
             _brush = brush;
             HP = 100;
+            Colorr = brush.Color.Name;
 
             this.barrel = barrel;
             barrel.BarrelBody = new Rectangle((x + _width / 2) - barlWidth / 2, y + _height, barlWidth, barlHeight);
@@ -57,37 +55,38 @@ namespace Tanks
        
         public override void Move()
         {
-            int x = Body.X;
-            int y = Body.Y;
-
-
-            switch (_direction)
+            if (IsStart)
             {
-                case EnDirection.Up:
-                    _width = WIDTH;
-                    _height = HEIGHT;
-                    y -= _moveSpeed;
-                    break;
-                case EnDirection.Down:
-                    _width = WIDTH;
-                    _height = HEIGHT;
-                    y += _moveSpeed;
-                    break;
-                case EnDirection.Left:
-                    _width = HEIGHT;
-                    _height = WIDTH;
-                    x -= _moveSpeed;
-                    break;
-                case EnDirection.Right:
-                    _width = HEIGHT;
-                    _height = WIDTH;
-                    x += _moveSpeed;
-                    break;
+                int x = Body.X;
+                int y = Body.Y;
+
+
+                switch (_direction)
+                {
+                    case EnDirection.Up:
+                        _width = WIDTH;
+                        _height = HEIGHT;
+                        y -= _moveSpeed;
+                        break;
+                    case EnDirection.Down:
+                        _width = WIDTH;
+                        _height = HEIGHT;
+                        y += _moveSpeed;
+                        break;
+                    case EnDirection.Left:
+                        _width = HEIGHT;
+                        _height = WIDTH;
+                        x -= _moveSpeed;
+                        break;
+                    case EnDirection.Right:
+                        _width = HEIGHT;
+                        _height = WIDTH;
+                        x += _moveSpeed;
+                        break;
+                }
+                Body = new Rectangle(x, y, _width, _height);
+                    ChangeBarrel();
             }
-            Body = new Rectangle(x, y, _width, _height);
-            ChangeBarrel();
-
-
         }
         public void ChangeBarrel()
         {
@@ -129,23 +128,16 @@ namespace Tanks
             barrel.BarrelBody = new Rectangle(barlX, barlY, barlWidth, barlHeight);
         }
         
-        public void Arm(params Bullet[] bulletPar)
-        {
-            foreach (var bullet in bulletPar)
-            {
-                bullets.Add(bullet);
-            }
-        }
-        public Bullet Shot(EnDirection direction)
+        public Bullet Shot()
         {
             int bulX = 0;
             int bulY = 0;
 
-            switch (direction)
+            switch (_direction)
             {
                 case EnDirection.Up:
                     bulX = (Body.X + _width / 2) - barlWidth / 2;
-                    bulY = Body.Y - barlHeight - 10;
+                    bulY = Body.Y - barlHeight - 15;
                     break;
                 case EnDirection.Down:
                     bulX = (Body.X + _width / 2) - barlWidth / 2;
@@ -161,48 +153,38 @@ namespace Tanks
                     break;
             }
 
-            return new Bullet(bulX, bulY, direction);
+            return new Bullet(bulX, bulY, _direction);
         }
 
-        public override void Intersection(List<Element> elements)
+        public override bool Intersection(List<Element> elements)
         {
-            foreach (Barrier bar in elements.OfType<Barrier>())
-                if (Body.IntersectsWith(bar.Body) || barrel.BarrelBody.IntersectsWith(bar.Body))
-                    HP -= 100;
+            foreach (Element element in elements)
+            {
+                if (element.Body == Body)
+                    continue;
 
-
-        }
-
-        //public override bool IntersectionTank(List<Element> elements)
-        //{
-        //    foreach (Tank tank in elements.OfType<Tank>())
-        //        if (Body.IntersectsWith(tank.Body))
-        //            return true;
-        //    return false;
-        //}
-        public override bool IntersectionBullet(List<Element> elements)
-        {
-            foreach (Bullet bullet in elements.OfType<Bullet>())
-                if (Body.IntersectsWith(bullet.Body))
+                if (Body.IntersectsWith(element.Body) || barrel.BarrelBody.IntersectsWith(element.Body))
                 {
-                    HP -= 10;
-                    return true;
+                    if (element is Barrier)
+                        HP -= 100;
+                    if (element is Bullet)
+                        HP -= 10;
+                    if(element is Tank)
+                        return true;
                 }
-
-
+            }
             return false;
         }
 
-        public bool Die()
+        public override bool Die()
         {
             if (HP <= 0)
                 return true;
 
             return false;
         }
-
     }
-    public class Barrel : Element
+    public class Barrel
     {
         public Rectangle BarrelBody { get; set; }
 

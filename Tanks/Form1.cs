@@ -22,18 +22,7 @@ namespace Tanks
         public const int CELL_SIZE = 10;
 
 
-        public bool isStart1 = false;
-        public bool isStart2 = false;
-
-
-        private static EnDirection tankBlueDir;
-        private static EnDirection tankBluelastDir;
-
-        private static EnDirection tankRedDir;
-        private static EnDirection tankRedlastDir;
-
-
-        System.Windows.Forms.Timer timer1 = new ();
+        private System.Windows.Forms.Timer timer1 = new ();
 
 
         public Form1()
@@ -41,36 +30,30 @@ namespace Tanks
             InitializeComponent();
 
             tankBlue = new Tank(50, 50, new SolidBrush(Color.Blue), new Barrel());
-            tankRed = new Tank(700, 450, new SolidBrush(Color.Red), new Barrel());
+            tankRed = new Tank(1090, 50, new SolidBrush(Color.Red), new Barrel());
 
-            elements = new List<Element>(); 
-            elements.Add(tankBlue);
-            elements.Add(tankRed);
-            elements.Add(new Barrier(200, 0, 10, 150));
-            elements.Add(new Barrier(200, 150, 300, 10));
-            elements.Add(new Barrier(500, 450, 10, 150));
-            elements.Add(new Barrier(200, 450, 300, 10));
-            elements.Add(new Barrier(0, 300, 300, 10));
-            elements.Add(new Barrier(500, 300, 300, 10));
+            elements = [
+                tankBlue,
+                tankRed,
 
-            elements.Add(new Barrier(-10, -10, 10, 600));
-            elements.Add(new Barrier(-10, -10, 800, 10));
-            elements.Add(new Barrier(800, -10, 10, 800));
-            elements.Add(new Barrier(0, 550, 810, 10));
-            
+                new Barrier(-10, -10, 10, 800),
+                new Barrier(-10, -10, 1200, 10),
+                new Barrier(1200, -10, 10, 800),
+                new Barrier(0, 750, 1210, 10)
+            ]; 
 
             this.DoubleBuffered = true;
 
-            timer1.Interval = 3;
+            timer1.Interval = 1;
             timer1.Tick += timer1Tick;
             timer1.Start();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            foreach (Element item in elements)
+            foreach (Element element in elements)
             {
-                item.Draw(e.Graphics);
+                element.Draw(e.Graphics);
             }
         }
 
@@ -79,87 +62,54 @@ namespace Tanks
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    if (tankBlueDir != EnDirection.Down)
-                    {
-                        tankBlueDir = EnDirection.Up;
-                        tankBlue.SetDirection(tankBlueDir);
-                        isStart1 = true;
-                    }
+                    tankBlue.SetDirection(EnDirection.Up);
+                    tankBlue.IsStart = true;
                     break;
                 case Keys.S:
-                    if (tankBlueDir != EnDirection.Up)
-                    {
-                        tankBlueDir = EnDirection.Down;
-                        tankBlue.SetDirection(tankBlueDir);
-                        isStart1 = true;
-                    }
+                    tankBlue.SetDirection(EnDirection.Down);
+                    tankBlue.IsStart = true;
                     break;
                 case Keys.A:
-                    if (tankBlueDir != EnDirection.Right)
-                    {
-                        tankBlueDir = EnDirection.Left;
-                        tankBlue.SetDirection(tankBlueDir);
-                        isStart1 = true;
-                    }
+                    tankBlue.SetDirection(EnDirection.Left);
+                    tankBlue.IsStart = true;
                     break;
                 case Keys.D:
-                    if (tankBlueDir != EnDirection.Left)
-                    {
-                        tankBlueDir = EnDirection.Right;
-                        tankBlue.SetDirection(tankBlueDir);
-                        isStart1 = true;
-                    }
+                    tankBlue.SetDirection(EnDirection.Right);
+                    tankBlue.IsStart = true;
                     break;
                 case Keys.E:
-                    isStart1 = false;
+                    tankBlue.IsStart = false;
                     break;
                 case Keys.Space:
-                    tankBluelastDir = tankBlueDir;
-                    elements.Add(tankBlue.Shot(tankBluelastDir));
-                    break;
+                    elements.Add(tankBlue.Shot());
+                    break; 
 
 
 
                 case Keys.Up:
-                    if (tankRedDir != EnDirection.Down)
-                    {
-                        tankRedDir = EnDirection.Up;
-                        tankRed.SetDirection(tankRedDir);
-                        isStart2 = true;
-                    }
+                    tankRed.SetDirection(EnDirection.Up);
+                    tankRed.IsStart = true;
                     break;
                 case Keys.Down:
-                    if (tankRedDir != EnDirection.Up)
-                    {
-                        tankRedDir = EnDirection.Down;
-                        tankRed.SetDirection(tankRedDir);
-                        isStart2 = true;
-                    }
+                    tankRed.SetDirection(EnDirection.Down);
+                    tankRed.IsStart = true;
                     break;
                 case Keys.Left:
-                    if (tankRedDir != EnDirection.Right)
-                    {
-                        tankRedDir = EnDirection.Left;
-                        tankRed.SetDirection(tankRedDir);
-                        isStart2 = true;
-                    }
+                    tankRed.SetDirection(EnDirection.Left);
+                    tankRed.IsStart = true;
                     break;
                 case Keys.Right:
-                    if (tankRedDir != EnDirection.Left)
-                    {
-                        tankRedDir = EnDirection.Right;
-                        tankRed.SetDirection(tankRedDir);
-                        isStart2 = true;
-                    }
+                    tankRed.SetDirection(EnDirection.Right);
+                    tankRed.IsStart = true;
                     break;
                 case Keys.OemPeriod:
-                    isStart2 = false;
+                    tankRed.IsStart = false;
                     break;
                 case Keys.OemQuestion:
-                    tankRedlastDir = tankRedDir;
-                    elements.Add(tankRed.Shot(tankRedlastDir));
+                    elements.Add(tankRed.Shot());
                     break;
             }
+
         }
 
 
@@ -175,46 +125,28 @@ namespace Tanks
 
         public void timer1Tick(object sender, EventArgs e)
         {
-            foreach (Element element in elements.OfType<Tank>())
+            foreach (Element element in elements)
             {
-                element.Intersection(elements);
-                element.IntersectionBullet(elements);
+                element.Intersection(elements, removeList);
+                element.Move();
 
-                if (isStart1)
-                    tankBlue.Move();
-
-                if (isStart2)
-                    tankRed.Move();
-
-                if (tankRed.Die())
+                if (element.Die())
                 {
                     timer1.Stop();
-                    lblDie.Text = "Синий танк победил";
-                    lblDie.Visible = true;
-                }
-                if (tankBlue.Die())
-                {
-                    timer1.Stop();
-                    lblDie.Text = "Красный танк победил";
+                    lblDie.Text = $"{element.Colorr} tank lose";
                     lblDie.Visible = true;
                 }
 
-                if (tankBlue.Body.IntersectsWith(tankRed.Body))
+                if (element.Intersection(elements))
                 {
                     timer1.Stop();
-                    lblDie.Text = "Ничья";
+                    lblDie.Text = "Drawn";
                     lblDie.Visible = true;
                 }
             }
 
 
             RemoveToList();
-            foreach (Element element in elements.OfType<Bullet>())
-            {
-                element.Move();
-                elements.RemoveAll(x => x.IsRemove);
-                //element.Intersection(elements, removeList);
-            }
 
             lblBlueHP.Text = $"{tankBlue.HP} hp";
 
