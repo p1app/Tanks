@@ -1,14 +1,7 @@
-using System.Drawing;
-using System.Security.Cryptography.Xml;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
-using static Tanks.Tank;
-
+using Timer = System.Windows.Forms.Timer;
 
 namespace Tanks
 {
-
-
     public partial class Form1 : Form
     {
         private Tank tankBlue;
@@ -17,8 +10,7 @@ namespace Tanks
         public List<Element> elements;
         public List<Element> removeList = new();
 
-        private System.Windows.Forms.Timer timer1 = new ();
-
+        private Timer timer1 = new ();
 
         public Form1()
         {
@@ -62,6 +54,7 @@ namespace Tanks
         {
             switch (e.KeyCode)
             {
+                //tankBlue
                 case Keys.W:
                     tankBlue.SetDirection(EnDirection.Up);
                     tankBlue.IsStart = true;
@@ -85,8 +78,7 @@ namespace Tanks
                     elements.Add(tankBlue.Shot());
                     break; 
 
-
-
+                    //tankRed
                 case Keys.Up:
                     tankRed.SetDirection(EnDirection.Up);
                     tankRed.IsStart = true;
@@ -110,11 +102,7 @@ namespace Tanks
                     elements.Add(tankRed.Shot());
                     break;
             }
-
         }
-
-
-
 
         public void RemoveToList()
         {

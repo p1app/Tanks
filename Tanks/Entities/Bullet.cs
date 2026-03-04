@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
-using static Tanks.Tank;
-
-namespace Tanks
+﻿namespace Tanks
 {
     public class Bullet : Element
     {
