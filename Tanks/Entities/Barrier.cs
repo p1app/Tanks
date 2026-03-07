@@ -13,18 +13,5 @@
         {
             g.FillRectangle(_brush, Body);
         }
-
-        public static Barrier[] ArrayBar(params Barrier[] barriers)
-        {
-            Barrier[] arrBarriers = new Barrier[barriers.Length];
-            int count = 0;
-            foreach (var item in barriers)
-            {
-                arrBarriers[count] = item;
-                count++;
-            }
-            return arrBarriers;
-        }
     }
-
 }

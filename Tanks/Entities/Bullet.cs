@@ -2,30 +2,32 @@
 {
     public class Bullet : Element
     {
-        public int x;
-        public int y;
-        public int indexList;
-        private int _width = WIDTH;
-        private int _height = HEIGHT;
-        private const int WIDTH = 5;
-        private const int HEIGHT = 10;
-        private SolidBrush bulletbrush = new SolidBrush(Color.Black);
-        EnDirection direction = EnDirection.Down;
+        private int _x;
+        private int _y;
 
-        int MoveSpeed = 20;
+        private int _width = _WIDTH;
+        private int _height = _HEIGHT;
+        private const int _WIDTH = 5;
+        private const int _HEIGHT = 10;
+
+        private SolidBrush _brush = new (Color.Black);
+
+        private EnDirection _direction;
+        
+        private const int _MOVE_SPEED = 20;
 
         public Bullet(int x, int y, EnDirection direction)
         {
-            this.x = x;
-            this.y = y;
+            _x = x;
+            _y = y;
 
-            Body = new Rectangle(this.x, this.y, _width, _height);
-            this.direction = direction;
+            Body = new Rectangle(_x, _y, _width, _height);
+            _direction = direction;
         }
 
         public override void Draw(Graphics g)
         {
-            g.FillRectangle(bulletbrush, x, y, _width, _height);
+            g.FillRectangle(_brush, _x, _y, _width, _height);
         }
 
         public override void Intersection(List<Element> elements, List<Element> removeElement)
@@ -43,30 +45,30 @@
 
         public override void Move()
         {
-            switch (direction)
+            switch (_direction)
             {
                 case EnDirection.Up:
-                _width = WIDTH;
-                _height = HEIGHT;
-                y -= MoveSpeed;
+                _width = _WIDTH;
+                _height = _HEIGHT;
+                _y -= _MOVE_SPEED;
                     break;
                 case EnDirection.Down:
-                    _width = WIDTH;
-                    _height = HEIGHT;
-                    y += MoveSpeed;
+                    _width = _WIDTH;
+                    _height = _HEIGHT;
+                    _y += _MOVE_SPEED;
                     break;
                 case EnDirection.Left:
-                    _width = HEIGHT;
-                    _height = WIDTH;
-                    x -= MoveSpeed;
+                    _width = _HEIGHT;
+                    _height = _WIDTH;
+                    _x -= _MOVE_SPEED;
                     break;
                 case EnDirection.Right:
-                    _width = HEIGHT;
-                    _height = WIDTH;
-                    x += MoveSpeed;
+                    _width = _HEIGHT;
+                    _height = _WIDTH;
+                    _x += _MOVE_SPEED;
                     break;
             }
-            Body = new Rectangle(x, y, _width, _height);
+            Body = new Rectangle(_x, _y, _width, _height);
         }
     }
 }

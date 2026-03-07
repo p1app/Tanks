@@ -8,7 +8,11 @@ namespace Tanks
         private Tank tankRed;
 
         public List<Element> elements;
-        public List<Element> removeList = new();
+        public List<Element> removeList = [];
+
+        
+        private const int _BARRIER_WIDTH = 10;
+        private const int _BARRIER_HEIGHT = 300; 
 
         private Timer timer1 = new ();
 
@@ -28,11 +32,11 @@ namespace Tanks
                 new Barrier(1182, -10, 10, 900),
                 new Barrier(-10, 850, 1210, 10),
 
-                new Barrier(290,0,10,300),
-                new Barrier(890,0,10,300),
-                new Barrier(590,300,10,300),
-                new Barrier(290,600,10,300),
-                new Barrier(890,600,10,300)
+                new Barrier(290, 0, _BARRIER_WIDTH, _BARRIER_HEIGHT),
+                new Barrier(890, 0, _BARRIER_WIDTH, _BARRIER_HEIGHT),
+                new Barrier(590, 300, _BARRIER_WIDTH, _BARRIER_HEIGHT),
+                new Barrier(290, 600, _BARRIER_WIDTH, _BARRIER_HEIGHT),
+                new Barrier(890, 600, _BARRIER_WIDTH, _BARRIER_HEIGHT)
             ]; 
 
             this.DoubleBuffered = true;
